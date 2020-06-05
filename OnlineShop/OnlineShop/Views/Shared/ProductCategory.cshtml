@@ -1,0 +1,22 @@
+﻿@model List<ProductCategory>
+@using Model.Object;
+
+<ul>
+    <h3 style="font-weight: bold; font-size: 20px; background: #B81D22; color: white">Product Category</h3>
+    @foreach (ProductCategory item in Model.Where(n => n.ShowOnHome == true))
+    {
+        IEnumerable<ProductCategory> child = Model.Where(x => x.ParentID == item.ID);
+        string parentClass = child.Count() > 0 ? "class=dropdown-toggle data-toggle=dropdown" : "";
+        <li class="dropdown">
+            <!-- path do mình thiết kế tí config cho route -->
+            <a href="/san-pham/@item.MetaTitle-@item.ID" @parentClass>@item.Name</a>
+
+            <ul class="dropdown-menu">
+                @foreach (ProductCategory childItem in child)
+                {
+                    <li><a href="/san-pham/@childItem.MetaTitle-@childItem.ID">@childItem.Name</a></li>
+                }
+            </ul>
+        </li>
+    }
+</ul>

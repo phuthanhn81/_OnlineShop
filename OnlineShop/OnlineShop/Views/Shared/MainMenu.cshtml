@@ -1,0 +1,22 @@
+﻿@model List<Menu>
+@using Model.Object;
+
+<div class="header_bottom">
+    <div class="menu">
+        <ul>
+            @foreach (Menu item in Model)
+            {
+                <li>
+                    <a href="@item.Link" target="@item.Target" title="@item.Text">@item.Text</a>
+                </li>
+            }
+            <div class="clear"></div>
+        </ul>
+    </div>
+    <div class="search_box">
+        <form action="/tim-kiem" method="get">
+            <input type="text" id="txtKeyword" name="keyword" placeholder="Gõ từ khoá"><input type="submit" value="">
+        </form>
+    </div>
+    <div class="clear"></div>
+</div>

@@ -1,0 +1,28 @@
+﻿@model Content
+@using Model.Object;
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content">
+    <div class="content_top">
+        <div class="heading">
+            <h3>@Model.Name</h3>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="section-group">
+        @Html.Raw(Model.Detail)
+        <ul>
+            @{
+                List<Tag> tags = (List<Tag>)ViewBag.Tags;
+                foreach (Tag tag in tags)
+                {
+                    // float rồi ko còn là list nữa
+                    <li style="float: left; margin-right: 10px"><a href="/tag/@tag.ID">@tag.Name</a></li>
+                }
+            }
+        </ul>
+    </div>
+</div>

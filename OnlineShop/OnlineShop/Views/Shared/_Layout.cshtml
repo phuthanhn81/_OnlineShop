@@ -1,0 +1,82 @@
+﻿<!-- chỉ ra Home của cái nào trong RouteConfig.cs -->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- SEO phải có 3 cái này -->
+    <title>@ViewBag.Title</title>
+    <meta name="Keywords" content="@ViewBag.Keywords" />
+    <meta name="Descriptions" content="@ViewBag.Descriptions" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    @Styles.Render("~/bundles/core")
+
+    <!-- jquery.min.js phải nằm 1st -->
+    @Scripts.Render("~/bundles/jscore")
+</head>
+<body>
+    <div class="wrap">
+        <div class="header">
+            <!-- RenderAction lấy data riêng cho html đó thôi | top-mid-bot -->
+            @{Html.RenderAction("TopMenu", "Home");}
+            <div class="header_top">
+                <div class="logo">
+                    <a href="/" ref="nofollow"><img src="/assets/client/images/logo.png" alt="" /></a>
+                </div>
+                @{Html.RenderAction("HeaderCart", "Home");}
+                <script type="text/javascript">
+                    function DropDown(el) {
+                        this.dd = el;
+                        this.initEvents();
+                    }
+                    DropDown.prototype = {
+                        initEvents: function () {
+                            var obj = this;
+
+                            obj.dd.on('click', function (event) {
+                                $(this).toggleClass('active');
+                                event.stopPropagation();
+                            });
+                        }
+                    }
+
+                    $(function () {
+
+                        var dd = new DropDown($('#dd'));
+
+                        $(document).click(function () {
+                            // all dropdowns
+                            $('.wrapper-dropdown-2').removeClass('active');
+                        });
+
+                    });
+
+                </script>
+                <div class="clear"></div>
+            </div>
+            @{Html.RenderAction("MainMenu", "Home");}
+
+            <!-- HomeController | ko có thì header sẽ ngắn hơn những page khác thôi (ko quan trọng) -->
+            @RenderSection("slide", required: false)
+        </div>
+
+        <div class="main">
+            <!-- ko có RenderA/S thì phần thân default sẽ gen html vào RenderB -->
+            @RenderBody()
+        </div>
+    </div>
+
+    <div class="footer">
+        @{Html.RenderAction("Footer", "Home");}
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $().UItoTop({ easingType: 'easeOutQuart' });
+        });
+    </script>
+    <a href="#" id="toTop"><span id="toTopHover"> </span></a>
+    <script src="/Assets/Client/js/controller/baseController.js"></script>
+    @RenderSection("jsFooter", required: false)
+</body>
+</html>

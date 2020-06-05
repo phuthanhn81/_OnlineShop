@@ -1,0 +1,87 @@
+﻿<!-- sử dụng PagedList thì phải dùng model tương ứng -->
+@model PagedList.IPagedList<User>
+@using PagedList.Mvc;
+@using Model.Object;
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouts.cshtml";
+}
+
+@section Header {List User}
+@section jsFooter{
+    <script src="/assets/admin/js/controller/userController.js"></script>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                List User
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                @using (Html.BeginForm("Index", "User", FormMethod.Get))
+                {
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <div class="col-md-4">
+                                <!-- dựa vào name -->
+                                <input type="text" value="@ViewBag.SearchString" class="form-control" name="SearchString" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-success">Search</button>
+                                <a class="btn btn-primary" href="/Admin/User/Post">Create</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Model đại diện cho model khai báo là 1 object hay 1 list | a móc là chỉ ra sử dụng ASP.NET -->
+                            @foreach (User n in Model)
+                            {
+                                <tr id="row_@n.ID">
+                                    <td>@n.ID</td>
+                                    <td>@n.UserName</td>
+                                    <td>@n.Name</td>
+                                    <td>@n.Email</td>
+                                    <td>
+                                        <a href="#" class="btn-active"
+                                           data-id="@n.ID">@Html.Raw(n.Status ? "<strong>Enable</strong>" : "Disable")</a>
+                                    </td>
+                                    <td>
+                                        <!-- n.ID 9 là đối số truyền vào phân biệt OverLoad (sài Ajax nhớ down về) -->
+                                        <!-- OnComplete xóa trên View trước rồi mới đến db -->
+                                        <a href="/Admin/User/Edit/@n.ID">Edit |</a>
+
+                                        @Ajax.ActionLink("Delete", "Delete", new { @ID = n.ID }, new AjaxOptions
+                                   {
+                                       Confirm = "Are you sure want to delete?",
+                                       OnComplete = "$('#row_" + @n.ID + "').remove()",
+                                   })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- tên mình đặt (here page/SearchString) phải trùng với đối số bên Controller
+                        thì nó mới Mapping đc ko quan trọng bao nhiêu param -->
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @ViewBag.SearchString }))
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿@model List<Menu>
+@using Model.Object;
+@using OnlineShop.Common;
+
+<div class="headertop_desc">
+    <div class="call">
+        <p><span>Need help?</span> call us <span class="number">1-22-3456789</span></span></p>
+    </div>
+    <div class="account_desc">
+        @{
+            UserLogin session = (UserLogin)Session[CommonConstants.USER_SESSION];
+        }
+        @if (session == null)
+        {
+            <ul>
+                @foreach (Menu item in Model)
+                {
+                    <li>
+                        <a href="@item.Link" target="@item.Target">@item.Text</a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <ul>
+                <li>Xin chào : @session.UserName</li>
+                <li>@Html.ActionLink("Thoát", "Logout", "User")</li>
+            </ul>
+        }
+    </div>
+    <div class="clear"></div>
+</div>
